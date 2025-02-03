@@ -1,0 +1,40 @@
+name: Deploy Application
+
+on:
+  push:
+    branches:
+      - staging
+      - live
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js (if using Node.js)
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Project (if applicable)
+        run: npm run build  # Change this if using another build command
+
+      - name: Deploy to Staging
+        if: github.ref == 'refs/heads/staging'
+        run: |
+          echo "Deploying to Staging..."
+          # Add your deployment commands here
+          # Example: rsync or scp to your test server
+
+      - name: Deploy to Production
+        if: github.ref == 'refs/heads/live'
+        run: |
+          echo "Deploying to Production..."
+          # Add your deployment commands here
+          # Example: rsync or scp to your production server
